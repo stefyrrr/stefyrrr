@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
+const assetUrl = (path) => import.meta.env.BASE_URL + path
+
 const skills = ['Analisis Data', 'Python', 'Microsoft Excel', 'Looker Studio', 'SQL (MySQL)', 'Business Intelligence', 'Machine Learning (R/Weka)', 'Oracle Database']
 
 const projects = [
@@ -44,7 +46,7 @@ const projects = [
     title: 'Aplikasi Kasir Waroeng Alya',
     description: 'Merancang aplikasi kasir berbasis web dengan PHP dan MySQL menggunakan metode Waterfall. Aplikasi diuji dengan Black Box Testing, responsif di berbagai browser, dan mendukung pencatatan transaksi serta stok secara real time.',
     stack: ['PHP', 'HTML/CSS/JS', 'MySQL', 'Black Box Testing'],
-    imageUrl: '/waroeng-alya-project-overview.png',
+    imageUrl: assetUrl('waroeng-alya-project-overview.png'),
     projectLabel: 'WEB DEVELOPMENT',
     palette: 'lilac',
     visual: 'kasir\nterpadu',
@@ -57,12 +59,12 @@ const projects = [
     description: 'Berkolaborasi sebagai System Analyst untuk menyusun arsitektur sistem, use case, dan alur proses bisnis penjualan bersama tim.',
     stack: ['System Analysis', 'Use Case', 'Proses Bisnis'],
     gallery: [
-      { src: '/project04-01.jpeg', alt: 'Serah terima aplikasi Dimsum Mey Mey bersama tim.', width: 1280, height: 960 },
-      { src: '/project04-02.png', alt: 'Tampilan dashboard admin Dimsum Mey Mey dengan ringkasan pesanan, pendapatan, dan laporan penjualan.', width: 615, height: 573 },
-      { src: '/project04-03.png', alt: 'Tampilan halaman utama website Dimsum Mey Mey.', width: 331, height: 235 },
-      { src: '/project04-04.png', alt: 'Tampilan menu dimsum dan informasi layanan pada website.', width: 322, height: 229 },
-      { src: '/project04-05.png', alt: 'Bagian lokasi dan footer website Dimsum Mey Mey.', width: 331, height: 235 },
-      { src: '/project04-06.png', alt: 'Sampul dokumen Software Requirements Specification Dimsum Mey Mey versi 1.0.', width: 1164, height: 643 },
+      { src: assetUrl('project04-01.jpeg'), alt: 'Serah terima aplikasi Dimsum Mey Mey bersama tim.', width: 1280, height: 960 },
+      { src: assetUrl('project04-02.png'), alt: 'Tampilan dashboard admin Dimsum Mey Mey dengan ringkasan pesanan, pendapatan, dan laporan penjualan.', width: 615, height: 573 },
+      { src: assetUrl('project04-03.png'), alt: 'Tampilan halaman utama website Dimsum Mey Mey.', width: 331, height: 235 },
+      { src: assetUrl('project04-04.png'), alt: 'Tampilan menu dimsum dan informasi layanan pada website.', width: 322, height: 229 },
+      { src: assetUrl('project04-05.png'), alt: 'Bagian lokasi dan footer website Dimsum Mey Mey.', width: 331, height: 235 },
+      { src: assetUrl('project04-06.png'), alt: 'Sampul dokumen Software Requirements Specification Dimsum Mey Mey versi 1.0.', width: 1164, height: 643 },
     ],
     projectLabel: 'TEAM PROJECT',
     palette: 'rose',
@@ -76,11 +78,11 @@ const projects = [
     description: 'Membimbing ratusan praktikan membuat wireframe dan antarmuka aplikasi menggunakan Figma sebagai tutor dan pengajar laboratorium.',
     stack: ['Figma', 'UI/UX', 'Wireframing'],
     gallery: [
-      { src: '/project05-01.png', alt: 'Rangkaian rancangan halaman login, pendaftaran, dan beranda aplikasi PsychoHeal.', width: 910, height: 678 },
-      { src: '/project05-02.png', alt: 'Rangkaian rancangan aplikasi perpustakaan digital iPusNas.', width: 667, height: 766 },
-      { src: '/project05-03.png', alt: 'Rancangan halaman login dan dashboard aplikasi Dimsum Mey Mey.', width: 724, height: 483 },
-      { src: '/project05-04.jpeg', alt: 'Foto bersama tim di ruang laboratorium komputer.', width: 4032, height: 3024 },
-      { src: '/project05-05.jpeg', alt: 'Foto kegiatan di depan komputer saat sesi laboratorium.', width: 1599, height: 1599 },
+      { src: assetUrl('project05-01.png'), alt: 'Rangkaian rancangan halaman login, pendaftaran, dan beranda aplikasi PsychoHeal.', width: 910, height: 678 },
+      { src: assetUrl('project05-02.png'), alt: 'Rangkaian rancangan aplikasi perpustakaan digital iPusNas.', width: 667, height: 766 },
+      { src: assetUrl('project05-03.png'), alt: 'Rancangan halaman login dan dashboard aplikasi Dimsum Mey Mey.', width: 724, height: 483 },
+      { src: assetUrl('project05-04.jpeg'), alt: 'Foto bersama tim di ruang laboratorium komputer.', width: 4032, height: 3024 },
+      { src: assetUrl('project05-05.jpeg'), alt: 'Foto kegiatan di depan komputer saat sesi laboratorium.', width: 1599, height: 1599 },
     ],
     projectLabel: 'MENTORSHIP',
     palette: 'butter',
@@ -94,11 +96,11 @@ const projects = [
     description: 'Mendampingi dan mengarahkan mahasiswa baru selama masa adaptasi kampus sebagai mentor kelompok PKKMB Universitas Gunadarma.',
     stack: ['Mentorship', 'Kepemimpinan', 'Komunikasi'],
     gallery: [
-      { src: '/pkkmb-01.jpeg', alt: 'Foto bersama panitia dan peserta PKKMB di area kampus.', width: 1280, height: 960 },
-      { src: '/pkkmb-02.jpeg', alt: 'Mahasiswa baru mengikuti pengarahan PKKMB di lapangan.', width: 900, height: 675 },
-      { src: '/pkkmb-03.jpeg', alt: 'Suasana kegiatan PKKMB di lapangan dalam gedung olahraga.', width: 1200, height: 900 },
-      { src: '/pkkmb-04.jpeg', alt: 'Panitia mendampingi mahasiswa peserta PKKMB di dalam gedung.', width: 1200, height: 900 },
-      { src: '/pkkmb-05.jpeg', alt: 'Panitia pendamping berbincang dengan peserta PKKMB di lapangan.', width: 900, height: 675 },
+      { src: assetUrl('pkkmb-01.jpeg'), alt: 'Foto bersama panitia dan peserta PKKMB di area kampus.', width: 1280, height: 960 },
+      { src: assetUrl('pkkmb-02.jpeg'), alt: 'Mahasiswa baru mengikuti pengarahan PKKMB di lapangan.', width: 900, height: 675 },
+      { src: assetUrl('pkkmb-03.jpeg'), alt: 'Suasana kegiatan PKKMB di lapangan dalam gedung olahraga.', width: 1200, height: 900 },
+      { src: assetUrl('pkkmb-04.jpeg'), alt: 'Panitia mendampingi mahasiswa peserta PKKMB di dalam gedung.', width: 1200, height: 900 },
+      { src: assetUrl('pkkmb-05.jpeg'), alt: 'Panitia pendamping berbincang dengan peserta PKKMB di lapangan.', width: 900, height: 675 },
     ],
     projectLabel: 'PENGALAMAN KAMPUS',
     palette: 'lilac',
@@ -350,7 +352,7 @@ function App() {
             <div className="hero__actions">
               <a className="button button--dark" href="#work">Lihat proyek <Arrow /></a>
               <a className="text-link" href="#contact">Hubungi saya <Arrow diagonal /></a>
-              <a className="text-link text-link--underlined hero__cv-link" href="/cv-stefy-ruslanda.pdf" download="CV-Stefy-Ruslanda.pdf">Unduh CV <Arrow diagonal /></a>
+              <a className="text-link text-link--underlined hero__cv-link" href={assetUrl('cv-stefy-ruslanda.pdf')} download="CV-Stefy-Ruslanda.pdf">Unduh CV <Arrow diagonal /></a>
             </div>
             <div className="hero__footnote"><span>01 — 06</span><span>SCROLL UNTUK MELIHAT LEBIH BANYAK</span><span className="hero__footnote-arrow">↓</span></div>
           </div>
@@ -361,11 +363,11 @@ function App() {
               <picture>
                 <source
                   type="image/webp"
-                  srcSet="/stefy-portrait-480.webp 480w, /stefy-portrait-800.webp 800w, /stefy-portrait-1120.webp 1120w"
+                  srcSet={`${assetUrl('stefy-portrait-480.webp')} 480w, ${assetUrl('stefy-portrait-800.webp')} 800w, ${assetUrl('stefy-portrait-1120.webp')} 1120w`}
                   sizes="(max-width: 420px) min(310px, calc(82vw - 30px)), (max-width: 720px) min(370px, 74vw), (max-width: 940px) 335px, 378px"
                 />
                 <img
-                  src="/STEFY%20FORMAL.jpg"
+                  src={assetUrl('STEFY%20FORMAL.jpg')}
                   alt="Potret Stefy Ruslanda"
                   width={1664}
                   height={2528}

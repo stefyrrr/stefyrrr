@@ -1,10 +1,10 @@
-# GitHub Pages Deployment Implementation Plan
+# GitHub Pages Project-Site Deployment Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Automatically build and publish the Vite portfolio to `https://stefyrrr.github.io/` from GitHub Actions.
+**Goal:** Automatically build and publish the portfolio at `https://stefyrrr.github.io/stefyrrr/` while keeping the existing repository name.
 
-**Architecture:** One workflow builds the Vite app on pushes to `main` and manual dispatches, uploads `dist/` as a Pages artifact, and deploys it in a separate least-privilege job. GitHub Pages must be configured to use GitHub Actions before the first deployment.
+**Architecture:** The Pages configuration action supplies the site base path before Vite builds. The workflow passes that path to Vite, and React builds public asset URLs from `import.meta.env.BASE_URL`; the workflow then uploads `dist/` and deploys it in a separate least-privilege job.
 
 **Tech Stack:** GitHub Actions, Node.js 24, npm, Vite, GitHub Pages artifact actions.
 
@@ -12,10 +12,12 @@
 
 ## Global Constraints
 
-- Deploy to the root user site `https://stefyrrr.github.io/`; keep Vite's default `/` base path.
+- Keep the repository name `stefyrrr` and publish at `https://stefyrrr.github.io/stefyrrr/`.
 - Trigger on pushes to `main` and `workflow_dispatch`.
 - Install with `npm ci`, build with `npm run build`, and publish only `dist/`.
-- Avoid personal access tokens and repository secrets; set Pages source to GitHub Actions once in repository settings.
+- Pass `steps.pages.outputs.base_path` plus a trailing slash to Vite's `--base` option.
+- Build public image and CV URLs in React from `import.meta.env.BASE_URL`.
+- Pages source is already set to GitHub Actions; avoid personal access tokens and repository secrets.
 - Use `actions/checkout@v6`, `actions/setup-node@v7`, `actions/configure-pages@v5`, `actions/upload-pages-artifact@v4`, and `actions/deploy-pages@v4`.
 - Grant the deploy job only `pages: write` and `id-token: write`; the build job needs `contents: read`.
 
@@ -24,46 +26,48 @@
 - Node below the Vite engine floor makes `npm ci` or the build fail; pin Node 24 and verify the production build.
 - An out-of-date lockfile makes `npm ci` fail; verify the workflow build completes from the committed lockfile.
 - Missing or wrong artifact path publishes no entry page; require `dist/index.html` and upload `dist/`.
-- A subpath base breaks root-site asset URLs; confirm generated URLs keep the `/` base.
-- Missing Pages source or deployment permissions blocks publishing; set the source to GitHub Actions and confirm the deployment job succeeds.
+- A root-based asset URL breaks the project site; use `import.meta.env.BASE_URL` for every public React asset and verify the generated bundle paths.
+- An empty or changed Pages base path can add a double slash or wrong repository prefix; build locally with `/stefyrrr/` and check the exact deployed URL and assets.
 
 ---
 
-### Task 1: Add the GitHub Pages workflow
+### Task 1: Fix project-site asset paths and the Pages build
 
 **Files:**
-- Create: `.github/workflows/deploy.yml`
+- Modify: `src/App.jsx`
+- Modify: `.github/workflows/deploy.yml`
 - Reference: `package.json`, `package-lock.json`, `vite.config.js`
+- Reference: `docs/superpowers/specs/2026-11-07-github-pages-deploy-design.md`
 
 **Interfaces:**
-- Consumes: npm scripts `build` and the committed lockfile.
-- Produces: a Pages artifact from `dist/` and a deployment URL from the `github-pages` environment.
+- Consumes: GitHub Pages `base_path` from `actions/configure-pages@v5`, npm script `build`, and the committed lockfile.
+- Produces: a Pages artifact from `dist/` with every HTML, CSS, JavaScript, image, and CV URL under the project-site base path.
 
-- [x] **Step 1: Confirm the current production build**
+- [x] **Step 1: Confirm the existing Vite build**
 
 Run: `npm.cmd run build`
 Expected: exit code 0 and `dist/index.html` exists.
 
-- [x] **Step 2: Create `.github/workflows/deploy.yml`**
+- [x] **Step 2: Make public React assets base-aware**
 
-Configure `push` for branch `main` and `workflow_dispatch`. The build job checks out the repository, sets up Node 24, runs `npm ci`, runs `npm run build`, configures Pages, and uploads the `dist/` directory. The deploy job depends on the build job, uses the `github-pages` environment with the deployment output URL, and runs `actions/deploy-pages@v4`. Give the build job `contents: read` and the deploy job only `pages: write` and `id-token: write`.
+In `src/App.jsx`, define one helper using the exact expression `import.meta.env.BASE_URL + path`. Use it for every public project image, PKKMB image, portrait source/srcSet, and the CV link. Keep external embed, report, and contact URLs unchanged.
 
-- [x] **Step 3: Review workflow structure and production output**
+- [x] **Step 3: Build with GitHub Pages' base path**
 
-Run: `npm.cmd run build`
-Expected: build succeeds; `dist/index.html` and root-relative asset paths exist. Review the workflow for the specified triggers, action versions, artifact path, job dependency, and permissions.
+In `.github/workflows/deploy.yml`, move `actions/configure-pages@v5` before the Vite build and give it `id: pages`. Build with `npm run build -- --base="${{ steps.pages.outputs.base_path }}/"`; keep uploading `./dist` and deploying the artifact with the existing permissions.
 
-- [x] **Step 4: Set the GitHub Pages publishing source**
+- [x] **Step 4: Verify the nested production build**
 
-Open `https://github.com/stefyrrr/stefyrrr/settings/pages` and set **Build and deployment → Source** to **GitHub Actions**. Save the setting before the first workflow run.
+Run: `npm.cmd run build -- --base=/stefyrrr/`
+Expected: exit code 0; `dist/index.html` points at `/stefyrrr/assets/...`, the Vite-generated HTML uses `/stefyrrr/` for favicon and preload assets, and the generated JavaScript contains `/stefyrrr/` for every public image and CV URL.
 
-- [ ] **Step 5: Commit and push the workflow**
+- [ ] **Step 5: Commit and push the corrected deployment**
 
-Run: `git add .github/workflows/deploy.yml docs/superpowers/specs/2026-11-07-github-pages-deploy-design.md docs/superpowers/plans/2026-11-07-github-pages-deploy.md`
-Run: `git commit -m "Add GitHub Pages deployment workflow"`
+Run: `git add src/App.jsx .github/workflows/deploy.yml docs/superpowers/specs/2026-11-07-github-pages-deploy-design.md docs/superpowers/plans/2026-11-07-github-pages-deploy.md`
+Run: `git commit -m "Fix GitHub Pages project base paths"`
 Run: `git push origin main`
-Expected: workflow appears in the repository's Actions tab.
+Expected: the correction is pushed and triggers a new Actions run.
 
-- [ ] **Step 6: Verify the first deployment**
+- [ ] **Step 6: Verify the public project site**
 
-Confirm the build and deploy jobs succeed and the environment output is `https://stefyrrr.github.io/`.
+Confirm the new build and deploy jobs succeed. Request `https://stefyrrr.github.io/stefyrrr/`, its generated JS/CSS, favicon, portrait, project images, and CV; expect HTTP 200 for each.
