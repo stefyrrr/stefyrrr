@@ -61,13 +61,13 @@ In `.github/workflows/deploy.yml`, move `actions/configure-pages@v5` before the 
 Run: `npm.cmd run build -- --base=/stefyrrr/`
 Expected: exit code 0; `dist/index.html` points at `/stefyrrr/assets/...`, the Vite-generated HTML uses `/stefyrrr/` for favicon and preload assets, and the generated JavaScript contains `/stefyrrr/` for every public image and CV URL.
 
-- [ ] **Step 5: Commit and push the corrected deployment**
+- [x] **Step 5: Commit and push the corrected deployment**
 
 Run: `git add src/App.jsx .github/workflows/deploy.yml docs/superpowers/specs/2026-11-07-github-pages-deploy-design.md docs/superpowers/plans/2026-11-07-github-pages-deploy.md`
 Run: `git commit -m "Fix GitHub Pages project base paths"`
 Run: `git push origin main`
 Expected: the correction is pushed and triggers a new Actions run.
 
-- [ ] **Step 6: Verify the public project site**
+- [x] **Step 6: Verify the public project site**
 
 Confirm the new build and deploy jobs succeed. Request `https://stefyrrr.github.io/stefyrrr/`, its generated JS/CSS, favicon, portrait, project images, and CV; expect HTTP 200 for each.
